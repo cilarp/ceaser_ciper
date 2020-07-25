@@ -10,14 +10,29 @@ fn main() {
                             .required(true)
                             .index(1))
                         .arg(Arg::with_name("shift")
+                            .help("shift words")
+                            .required(true)
+                            .index(2)
                             .short("s")
-                            .help("shift words"))
+                            .long("shift"))
                         .get_matches();
 
     let msg = matches.value_of("input").unwrap();
+    let shift = matches.value_of("shift").unwrap();
     let s: Vec<char> = msg.chars().collect();
-    for i in 1..26{
-        print_chars(ciper(&s, i));
+    if shift == "all"{
+        for i in 1..26{
+            print_chars(ciper(&s, i));
+        }
+    }else{
+        let shift: usize = match shift.parse(){
+            Ok(s) => s,
+            Err(e) => panic!("Input integer for shift"),
+        };
+        print!("Encode: ");
+        print_chars(ciper(&s,shift));
+        print!("Decode: ");
+        print_chars(ciper(&s,26 - shift));
     }
 }
 
