@@ -1,4 +1,4 @@
-use clap::{Arg,App,SubCommand};
+use clap::{Arg,App};
 
 fn main() {
     let matches = App::new("Ciper Crypto")
@@ -14,7 +14,7 @@ fn main() {
                             .help("shift words"))
                         .get_matches();
 
-    let mut msg = matches.value_of("input").unwrap();
+    let msg = matches.value_of("input").unwrap();
     let s: Vec<char> = msg.chars().collect();
     for i in 1..26{
         print_chars(ciper(&s, i));
@@ -26,11 +26,10 @@ fn ciper(msg: &Vec<char>,shift: usize) -> Vec<char>{
     let upper: &str = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     let lower: &str = "abcdefghijklmnopqrstuvwxyz";
     
-    let mut s = msg.clone();
     let mut res = Vec::new();
 
     let shift = shift % 26;
-    for c in s{
+    for c in msg.clone(){
         let c_ascii = c as u8;
         
         if c.is_whitespace() {
@@ -44,37 +43,28 @@ fn ciper(msg: &Vec<char>,shift: usize) -> Vec<char>{
             continue;
         }
 
-
         if c.is_uppercase(){
-            match upper.chars().position(|t| t == c){
-                Some(pos) => {
-                    let pos = shift + pos;
-                    let newpos = {
-                        if 26 <= pos {pos - 26} else {pos}
-                    };
-                    res.push(upper.chars().nth(newpos).unwrap());
-                },
-                None => {
-                    res.push(c);
-                }
-            }
-        }else{
-            match lower.chars().position(|t| t == c){
-                Some(pos) => {
-                    let pos = shift + pos;
-                    let newpos = {
-                        if 26 <= pos {pos - 26} else {pos}
-                    };
-                    res.push(lower.chars().nth(newpos).unwrap());
-                },
-                None => {
-                    res.push(c);
-                }
-            }
-        
+            process(c, upper, shift, &mut res);
+        }else{  
+            process(c, lower, shift, &mut res);
         }
     }
     res
+}
+
+fn process(c: char,strings: &str,shift: usize,res: &mut Vec<char>){
+    match strings.chars().position(|t| t == c){
+        Some(pos) => {
+            let pos = shift + pos;
+            let newpos = {
+                if 26 <= pos {pos - 26} else {pos}
+            };
+            res.push(strings.chars().nth(newpos).unwrap());
+        },
+        None => {
+            res.push(c);
+        }
+    }
 }
 
 fn print_chars(s: Vec<char>){
