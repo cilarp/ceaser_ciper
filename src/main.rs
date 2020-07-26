@@ -30,20 +30,21 @@ fn main() {
         }
     } else if shift.contains("-") {
         let shift: Vec<&str> = shift.split("-").collect();
-        let shift: Vec<usize> = shift
+        let shifts: Vec<usize> = shift
             .iter()
             .map(|s| s.parse().expect("input numbef before/after -  "))
             .collect();
-        if shift.len() % 2 == 1 {
-            let (start, end) = (shift[0], shift[shift.len() - 1]);
-            for i in start..end + 1 {
-                print_chars(ciper(&s, i));
+
+        if shifts.len() % 2 == 1 {
+            let (start, end) = (shifts[0], shifts[shifts.len() - 1] + 1);
+            for shift in start..end {
+                print_ciper(&s, shift);
             }
         } else {
-            let times = shift.len() / 2;
-            for i in 0..times {
-                for j in shift[i * 2]..shift[i * 2 + 1] {
-                    print_chars(ciper(&s, j));
+            let times = shifts.len() / 2;
+            for time in 0..times {
+                for shift in shifts[time * 2]..shifts[time * 2 + 1] {
+                    print_ciper(&s, shift);
                 }
             }
         }
@@ -53,9 +54,9 @@ fn main() {
             Err(e) => panic!("Input integer or \"all\" for shift"),
         };
         print!("Encode: ");
-        print_chars(ciper(&s, shift));
+        print_ciper(&s, shift);
         print!("Decode: ");
-        print_chars(ciper(&s, 26 - shift));
+        print_ciper(&s, 26 - shift);
     }
 }
 
@@ -113,4 +114,8 @@ fn print_chars(s: Vec<char>) {
         print!("{}", i);
     }
     print!("\n");
+}
+
+fn print_ciper(msg: &Vec<char>, shift: usize) {
+    print_chars(ciper(&msg, shift));
 }
