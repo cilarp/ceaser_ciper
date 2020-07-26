@@ -51,7 +51,7 @@ fn main() {
     } else {
         let shift: usize = match shift.parse() {
             Ok(s) => s,
-            Err(e) => panic!("Input integer or \"all\" for shift"),
+            Err(e) => panic!("Input integer or \"all\" for shift\n{}", e),
         };
         print!("Encode: ");
         print_ciper(&s, shift);
