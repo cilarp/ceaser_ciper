@@ -6,7 +6,7 @@ use clap::{App, Arg};
 //cargo run [strings] [option]
 //
 //description
-//You can use "all" or number or (number=number)+ as [option]
+//You can use "all" or number or (number-number)+ as [option]
 //If you choice "all" as option,then this program prints out all considerable results.
 //If you choice number,then this program prints out encoded and decoded result shifting given string given number.
 //If you choice (number-number)+ as option,then this program prints out results shifting given string given ranges.
