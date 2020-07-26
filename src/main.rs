@@ -1,5 +1,16 @@
 use clap::{App, Arg};
 
+//I referred to https://gist.github.com/RockyTV/c3412fabf6cec5156e49
+//
+//Usage
+//cargo run [strings] [option]
+//
+//description
+//You can use "all" or number or (number=number)+ as [option]
+//If you choice "all" as option,then this program prints out all considerable results.
+//If you choice number,then this program prints out encoded and decoded result shifting given string given number.
+//If you choice (number-number)+ as option,then this program prints out results shifting given string given ranges.
+
 fn main() {
     let matches = App::new("Ciper Crypto")
         .version("1.0")
@@ -69,17 +80,6 @@ fn ciper(msg: &Vec<char>, shift: usize) -> Vec<char> {
     let shift = shift % 26;
     for c in msg.clone() {
         let c_ascii = c as u8;
-
-        if c.is_whitespace() {
-            res.push(c);
-            continue;
-        }
-
-        //not in a-z or A-Z
-        if c_ascii < 65 || (90 < c_ascii && c_ascii < 97) || 123 < c_ascii {
-            res.push(c);
-            continue;
-        }
 
         if c.is_uppercase() {
             process(c, upper, shift, &mut res);
