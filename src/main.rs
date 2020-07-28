@@ -10,6 +10,7 @@ use clap::{App, Arg};
 //If you choice "all" as option,then this program prints out all considerable results.
 //If you choice number,then this program prints out encoded and decoded result shifting given string given number.
 //If you choice (number-number)+ as option,then this program prints out results shifting given string given ranges.
+//Also you can use '-' and ',' such like number-number,number-number
 
 fn main() {
     let matches = App::new("Ciper Crypto")
@@ -34,40 +35,29 @@ fn main() {
 
     let msg = matches.value_of("input").unwrap();
     let shift = matches.value_of("shift").unwrap();
-    let s: Vec<char> = msg.chars().collect();
+    let msg: Vec<char> = msg.chars().collect();
     if shift == "all" {
-        for i in 1..26 {
-            print_chars(ciper(&s, i));
+        for shift in 1..26 {
+            print_ciper(&msg, shift);
         }
     } else if shift.contains("-") {
-        let shift: Vec<&str> = shift.split("-").collect();
-        let shifts: Vec<usize> = shift
-            .iter()
-            .map(|s| s.parse().expect("input numbef before/after -  "))
-            .collect();
-
-        if shifts.len() % 2 == 1 {
-            let (start, end) = (shifts[0], shifts[shifts.len() - 1] + 1);
-            for shift in start..end {
-                print_ciper(&s, shift);
+        if shift.contains(',') {
+            let shifts: Vec<&str> = shift.split(',').collect();
+            for shift in shifts {
+                print_ciper_with_hyphen(shift, &msg);
             }
         } else {
-            let times = shifts.len() / 2;
-            for time in 0..times {
-                for shift in shifts[time * 2]..shifts[time * 2 + 1] {
-                    print_ciper(&s, shift);
-                }
-            }
+            print_ciper_with_hyphen(shift, &msg);
         }
     } else {
         let shift: usize = match shift.parse() {
-            Ok(s) => s,
+            Ok(shift) => shift,
             Err(e) => panic!("Input integer or \"all\" for shift\n{}", e),
         };
         print!("Encode: ");
-        print_ciper(&s, shift);
+        print_ciper(&msg, shift);
         print!("Decode: ");
-        print_ciper(&s, 26 - shift);
+        print_ciper(&msg, 26 - shift);
     }
 }
 
@@ -79,8 +69,6 @@ fn ciper(msg: &Vec<char>, shift: usize) -> Vec<char> {
 
     let shift = shift % 26;
     for c in msg.clone() {
-        let c_ascii = c as u8;
-
         if c.is_uppercase() {
             process(c, upper, shift, &mut res);
         } else {
@@ -118,4 +106,29 @@ fn print_chars(s: Vec<char>) {
 
 fn print_ciper(msg: &Vec<char>, shift: usize) {
     print_chars(ciper(&msg, shift));
+}
+
+fn print_ciper_with_hyphen(shift: &str, msg: &Vec<char>) {
+    let shift: Vec<String> = shift
+        .split("-")
+        .map(|s| s.to_string().replace(" ", ""))
+        .collect();
+    let shifts: Vec<usize> = shift
+        .iter()
+        .map(|s| s.parse().expect("input numbef before/after -  "))
+        .collect();
+
+    if shifts.len() % 2 == 1 {
+        let (start, end) = (shifts[0], shifts[shifts.len() - 1] + 1);
+        for shift in start..end {
+            print_ciper(&msg, shift);
+        }
+    } else {
+        let times = shifts.len() / 2;
+        for time in 0..times {
+            for shift in shifts[time * 2]..shifts[time * 2 + 1] + 1 {
+                print_ciper(&msg, shift);
+            }
+        }
+    }
 }
