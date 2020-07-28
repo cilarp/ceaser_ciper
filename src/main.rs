@@ -126,7 +126,8 @@ fn print_ciper_with_hyphen(shift: &str, msg: &Vec<char>) {
     } else {
         let times = shifts.len() / 2;
         for time in 0..times {
-            for shift in shifts[time * 2]..shifts[time * 2 + 1] + 1 {
+            let (start, end) = (shifts[time * 2], shifts[time * 2] + 1);
+            for shift in start..end {
                 print_ciper(&msg, shift);
             }
         }
