@@ -1,16 +1,18 @@
 use clap::{App, Arg};
 
-//I referred to https://gist.github.com/RockyTV/c3412fabf6cec5156e49
-//
-//Usage
-//cargo run [strings] [option]
-//
-//description
-//You can use "all" or number or (number-number)+ as [option]
-//If you choice "all" as option,then this program prints out all considerable results.
-//If you choice number,then this program prints out encoded and decoded result shifting given string given number.
-//If you choice (number-number)+ as option,then this program prints out results shifting given string given ranges.
-//Also you can use ',' such like number-number,number-number
+/*
+  I referred to https://gist.github.com/RockyTV/c3412fabf6cec5156e49
+/
+  Usage
+  cargo run [strings] [option]
+/
+  description
+  You can use "all" or number or (number-number)+ as [option]
+  If you choice "all" as option,then this program prints out all considerable results.
+  If you choice number,then this program prints out encoded and decoded result shifting given string given number.
+  If you choice (number-number)+ as option,then this program prints out results shifting given string given ranges.
+  Also you can use ',' such like number-number,number-number
+*/
 
 fn main() {
     let matches = App::new("Ciper Crypto")
