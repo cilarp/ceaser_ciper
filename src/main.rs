@@ -10,7 +10,7 @@ use clap::{App, Arg};
 //If you choice "all" as option,then this program prints out all considerable results.
 //If you choice number,then this program prints out encoded and decoded result shifting given string given number.
 //If you choice (number-number)+ as option,then this program prints out results shifting given string given ranges.
-//Also you can use '-' and ',' such like number-number,number-number
+//Also you can use ',' such like number-number,number-number
 
 fn main() {
     let matches = App::new("Ciper Crypto")
